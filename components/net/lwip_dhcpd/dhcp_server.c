@@ -37,6 +37,11 @@
 #include <netif/etharp.h>
 #include <netif/ethernetif.h>
 #include <lwip/ip.h>
+#include <lwip/init.h>
+
+#if (LWIP_VERSION) >= 0x02000000U
+#include <lwip/prot/dhcp.h>
+#endif
 
 /* DHCP server option */
 
@@ -376,13 +381,24 @@ static void dhcpd_thread_entry(void *parameter)
 void dhcpd_start(char* netif_name)
 {
     rt_thread_t thread;
-    struct netif *netif = RT_NULL;
+    struct netif *netif = netif_list;
 
-    /* find ethernet interface. */
-    netif = netif_find(netif_name);
-    if (netif == RT_NULL)
+    if(strlen(netif_name) > sizeof(netif->name))
     {
-        DEBUG_PRINTF("Not found network interface:%s\n", netif_name);
+        rt_kprintf("network interface name too long!\r\n");
+        return;
+    }
+    while(netif != RT_NULL)
+    {
+        if(strncmp(netif_name, netif->name, sizeof(netif->name)) == 0)
+            break;
+
+        netif = netif->next;
+        if( netif == RT_NULL )
+        {
+            rt_kprintf("network interface: %s not found!\r\n", netif_name);
+            return;
+        }
     }
 
     thread = rt_thread_create("dhcpd",

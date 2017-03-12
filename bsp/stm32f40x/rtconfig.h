@@ -69,6 +69,9 @@
 /* Using GPIO pin framework */
 #define RT_USING_PIN
 
+/* Using Hardware Timer framework */
+//#define RT_USING_HWTIMER
+
 /* SECTION: Console options */
 #define RT_USING_CONSOLE
 /* the buffer size of console*/
@@ -151,14 +154,6 @@
 #define RT_LWIP_TCP_SND_BUF	8192
 /* TCP receive window. */
 #define RT_LWIP_TCP_WND		8192
-
-#define CHECKSUM_CHECK_TCP              0
-#define CHECKSUM_CHECK_IP               0
-#define CHECKSUM_CHECK_UDP              0
-
-#define CHECKSUM_GEN_TCP                0
-#define CHECKSUM_GEN_IP                 0
-#define CHECKSUM_GEN_UDP                0
 
 /* RT_GDB_STUB */
 //#define RT_USING_GDB

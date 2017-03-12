@@ -87,7 +87,7 @@ void (*rt_object_put_hook)(struct rt_object *object);
  * @addtogroup Hook
  */
 
-/*@{*/
+/**@{*/
 
 /**
  * This function will set a hook function, which will be invoked when object
@@ -159,7 +159,7 @@ void rt_object_put_sethook(void (*hook)(struct rt_object *object))
     rt_object_put_hook = hook;
 }
 
-/*@}*/
+/**@}*/
 #endif
 
 /**
@@ -178,7 +178,7 @@ void rt_system_object_init(void)
  * @addtogroup KernelObject
  */
 
-/*@{*/
+/**@{*/
 
 /**
  * This function will return the specified type of object information.
@@ -401,8 +401,8 @@ rt_bool_t rt_object_is_systemobject(rt_object_t object)
  */
 rt_object_t rt_object_find(const char *name, rt_uint8_t type)
 {
-    struct rt_object *object;
-    struct rt_list_node *node;
+    struct rt_object *object = RT_NULL;
+    struct rt_list_node *node = RT_NULL;
     struct rt_object_information *information = RT_NULL;
 
     /* parameter check */
@@ -494,4 +494,4 @@ rt_object_t rt_object_find(const char *name, rt_uint8_t type)
     return RT_NULL;
 }
 
-/*@}*/
+/**@}*/

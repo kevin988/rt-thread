@@ -50,7 +50,9 @@
 #ifndef FINSH_THREAD_STACK_SIZE
 #define FINSH_THREAD_STACK_SIZE 2048
 #endif
+#ifndef FINSH_CMD_SIZE
 #define FINSH_CMD_SIZE		80
+#endif
 
 #define FINSH_OPTION_ECHO	0x01
 #if defined(FINSH_USING_MSH) || (defined(RT_USING_DFS) && defined(DFS_USING_WORKDIR))
@@ -65,6 +67,18 @@ const char* finsh_get_prompt(void);
 		#define FINSH_HISTORY_LINES 5
 	#endif
 #endif
+
+#ifdef FINSH_USING_AUTH
+    #ifndef FINSH_PASSWORD_MAX
+        #define FINSH_PASSWORD_MAX RT_NAME_MAX
+    #endif
+    #ifndef FINSH_PASSWORD_MIN
+        #define FINSH_PASSWORD_MIN 6
+    #endif
+    #ifndef FINSH_DEFAULT_PASSWORD
+        #define FINSH_DEFAULT_PASSWORD "rtthread"
+    #endif
+#endif /* FINSH_USING_AUTH */
 
 enum input_stat
 {
@@ -96,6 +110,10 @@ struct finsh_shell
 	rt_uint8_t line_curpos;
 
 	rt_device_t device;
+
+#ifdef FINSH_USING_AUTH
+	char password[FINSH_PASSWORD_MAX];
+#endif
 };
 
 void finsh_set_echo(rt_uint32_t echo);
@@ -104,5 +122,10 @@ rt_uint32_t finsh_get_echo(void);
 int finsh_system_init(void);
 void finsh_set_device(const char* device_name);
 const char* finsh_get_device(void);
+
+#ifdef FINSH_USING_AUTH
+rt_err_t finsh_set_password(const char *password);
+const char *finsh_get_password(void);
+#endif
 
 #endif
